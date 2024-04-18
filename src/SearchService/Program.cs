@@ -12,11 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// get item new from rabbitmq.
 builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolicy());
 
 //Add masstrasient library to help communicate with rabbitmq
 builder.Services.AddMassTransit(x =>
 {
+    //will get all consumers unders the folder where AuctionCreatedConsumer is in.
     x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     x.UsingRabbitMq((context, cfg) =>
@@ -36,7 +38,7 @@ var app = builder.Build();
 app.UseAuthorization();
 app.MapControllers();
 
-
+// will always try to initialize the db, so if the db is down, it will keep try to connect to db
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
     try
@@ -49,10 +51,9 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-
-
 app.Run();
 
+// keep tring to line to the rabbitmq to get messages.
 static IAsyncPolicy<HttpResponseMessage> GetPolicy()
     => HttpPolicyExtensions
         .HandleTransientHttpError()

@@ -44,7 +44,6 @@ var app = builder.Build();
 
 //configure the http request pipeline.
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

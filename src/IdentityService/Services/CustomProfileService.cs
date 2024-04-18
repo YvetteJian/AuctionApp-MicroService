@@ -15,6 +15,7 @@ public class CustomProfileService : IProfileService
         _userManager = userManager;
     }
 
+    //add extra information in jwt token 
     public async Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
         var user = await _userManager.GetUserAsync(context.Subject);
