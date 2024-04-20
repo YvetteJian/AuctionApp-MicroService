@@ -20,17 +20,15 @@ public static class Config
     public static IEnumerable<Client> Clients =>
         new Client[]
         {
-            new Client
-            {
+            new() {
                 ClientId = "postman",
                 ClientName = "Postman",
                 AllowedScopes = {"openid", "profile", "auctionApp"},
-                RedirectUris = {"heeps://www.getpostman.com.oauth2/callback"},
+                RedirectUris = {"https://www.getpostman.com.oauth2/callback"},
                 ClientSecrets = new[] { new Secret("NotASecret".Sha256())},
                 AllowedGrantTypes = {GrantType.ResourceOwnerPassword}
                 },
-            new Client
-            {
+            new() {
                 ClientId = "nextApp",
                 ClientName = "nextApp",
                 ClientSecrets = {new Secret("secret".Sha256())},
