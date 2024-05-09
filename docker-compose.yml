@@ -6,16 +6,16 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - /var/lib/postresql/data
   mongodb:
     image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=mongopw 
+      - MONGO_INITDB_ROOT_PASSWORD=mongopw
     ports:
       - 27017:27017
     volumes:
-      - mongodata:/var/lib/mongodb/data
+      - /var/lib/mongodb/data
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
@@ -76,7 +76,3 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6001:80
-
-volumes:
-  pgdata:
-  mongodata:
