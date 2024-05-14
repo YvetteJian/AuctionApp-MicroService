@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./nav/Navbar";
+import ToasterProvider from "./providers/ToastPorvider";
 
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
     
     <html lang="en">   
       <body>
+        <ToasterProvider/>
         <Navbar/>
         <main>
           {children}
