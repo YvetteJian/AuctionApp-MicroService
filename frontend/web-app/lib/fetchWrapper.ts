@@ -19,7 +19,7 @@ async function post(url: string, body: {}) {
         headers: await getHeaders(),
         body: JSON.stringify(body)
     };
-    const response = await fetch('http://localhost:6001/auctions', requestOptions);
+    const response = await fetch(baseUrl + url, requestOptions);
     return await handleResponse(response);
 }
 
@@ -53,14 +53,20 @@ async function getHeaders() {
 
 async function handleResponse(response: Response) {
     const text = await response.text();
-    const data = text && JSON.parse(text);
+    // const data = text && JSON.parse(text);
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (error) {   
+        data = text;
+    }
 
     if (response.ok) {
         return data || response.statusText;
     } else {
         const error = {
             status: response.status,
-            message: response.statusText
+            message: typeof data === 'string' ? data : response.statusText
         }
         console.log(error);
         return {error};
